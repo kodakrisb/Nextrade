@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NexTrade</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0f172a;--bg2:#1a2640;
+  --accent:#3b82f6;--accent2:#10b981;
+  --text:#f1f5f9;--muted:#94a3b8;--border:#1e3a5f;
+  --card:rgba(22,32,50,0.75);--radius:12px;
+}
+body{
+  background-color:var(--bg);
+  color:var(--text);
+  font-family:'Inter',system-ui,sans-serif;
+  line-height:1.6;
+  overflow-x:hidden;
+  background-image:
+    radial-gradient(ellipse at 20% 20%, rgba(59,130,246,0.06) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 80%, rgba(16,185,129,0.05) 0%, transparent 60%),
+    url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg stroke='%231e3a5f' stroke-width='0.5' opacity='0.6'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+.bg-grid{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;
+  background-image:linear-gradient(rgba(59,130,246,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(59,130,246,0.03) 1px,transparent 1px);
+  background-size:80px 80px;}
+.bg-glow1{position:fixed;top:-200px;left:-200px;width:700px;height:700px;border-radius:50%;background:radial-gradient(circle,rgba(59,130,246,0.07) 0%,transparent 70%);pointer-events:none;z-index:0}
+.bg-glow2{position:fixed;bottom:-200px;right:-200px;width:700px;height:700px;border-radius:50%;background:radial-gradient(circle,rgba(16,185,129,0.06) 0%,transparent 70%);pointer-events:none;z-index:0}
+.page-wrap{position:relative;z-index:1}
+
+a{color:inherit;text-decoration:none}
+
+nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem 4rem;border-bottom:1px solid var(--border);position:sticky;top:0;background:rgba(15,23,42,0.92);backdrop-filter:blur(12px);z-index:100}
+.logo{font-size:1.4rem;font-weight:700;color:var(--accent)}
+.logo span{color:var(--text)}
+.nav-links{display:flex;gap:2rem;font-size:.9rem;color:var(--muted)}
+.nav-links a:hover{color:var(--text)}
+.nav-cta{display:flex;gap:.8rem}
+.btn{padding:.5rem 1.2rem;border-radius:8px;font-size:.85rem;cursor:pointer;border:none;font-weight:500;color:var(--text)}
+.btn-ghost{background:transparent;border:1px solid var(--border);color:var(--text)}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-primary:hover{opacity:.9}
+.btn-ghost:hover{border-color:var(--accent);color:var(--accent)}
+
+.hero{padding:5rem 4rem 3rem;text-align:center;max-width:900px;margin:0 auto}
+.hero-badge{display:inline-block;background:rgba(59,130,246,.12);border:1px solid rgba(59,130,246,.3);color:#93c5fd;padding:.3rem 1rem;border-radius:999px;font-size:.78rem;margin-bottom:1.5rem;letter-spacing:.05em}
+.hero h1{font-size:3.2rem;font-weight:800;line-height:1.15;margin-bottom:1.2rem;color:var(--text)}
+.hero h1 span{color:var(--accent)}
+.hero p{font-size:1.1rem;color:var(--muted);max-width:600px;margin:0 auto 2rem}
+.hero-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+.hero-btns .btn{padding:.75rem 2rem;font-size:.95rem;border-radius:10px}
+.stats-row{display:flex;justify-content:center;gap:3rem;margin:3rem 0 1rem;flex-wrap:wrap}
+.stat{text-align:center}
+.stat-num{font-size:1.8rem;font-weight:700;color:var(--accent)}
+.stat-label{font-size:.8rem;color:var(--muted);margin-top:.2rem}
+
+.ticker-wrap{overflow:hidden;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:rgba(22,32,50,0.8);padding:.7rem 0}
+.ticker-track{display:flex;white-space:nowrap;animation:scroll 40s linear infinite}
+.ticker-track:hover{animation-play-state:paused}
+.ticker-item{display:inline-flex;align-items:center;gap:.5rem;padding:0 1.5rem;font-size:.85rem;border-right:1px solid var(--border);color:var(--text)}
+.ticker-sym{font-weight:600}
+.ticker-price{color:var(--muted)}
+.up{color:#10b981}.down{color:#f43f5e}
+@keyframes scroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+section{padding:4.5rem 4rem}
+
+.sec-head{text-align:center;margin-bottom:3rem}
+.section-label{font-size:.75rem;letter-spacing:.15em;color:var(--accent);text-transform:uppercase;margin-bottom:.7rem;font-weight:600}
+.section-title{font-size:2.4rem;font-weight:800;color:var(--text);line-height:1.15;margin-bottom:.9rem;letter-spacing:-.01em}
+.section-sub{color:var(--muted);font-size:1.05rem;max-width:580px;margin:0 auto;line-height:1.7}
+.title-line{width:48px;height:3px;background:var(--accent);border-radius:2px;margin:.9rem auto 0}
+
+.features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1.2rem}
+.feat-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;transition:border-color .2s;backdrop-filter:blur(4px)}
+.feat-card:hover{border-color:var(--accent)}
+.feat-icon{font-size:1.5rem;margin-bottom:.8rem}
+.feat-card h3{font-size:.95rem;font-weight:600;margin-bottom:.4rem;color:var(--text)}
+.feat-card p{font-size:.82rem;color:var(--muted)}
+
+.momentum-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem}
+.m-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:1.2rem;transition:border-color .2s;backdrop-filter:blur(4px)}
+.m-card:hover{border-color:var(--accent2)}
+.m-sym{font-weight:700;font-size:1rem;color:var(--text)}
+.m-price{font-size:.85rem;color:var(--muted);margin:.2rem 0}
+.m-bar{height:3px;background:#1e3a5f;border-radius:2px;margin-top:.6rem;overflow:hidden}
+.m-bar-fill{height:100%;border-radius:2px}
+
+.plans-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.2rem}
+.plan-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;position:relative;transition:transform .2s,border-color .2s;backdrop-filter:blur(4px)}
+.plan-card:hover{transform:translateY(-3px);border-color:var(--accent)}
+.plan-card.featured{border-color:var(--accent);background:rgba(59,130,246,.08)}
+.plan-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--accent);color:#fff;font-size:.7rem;padding:.25rem .8rem;border-radius:999px;white-space:nowrap;font-weight:600}
+.plan-name{font-size:.85rem;color:var(--muted);margin-bottom:.5rem}
+.plan-roi{font-size:2rem;font-weight:700;color:var(--accent)}
+.plan-roi span{font-size:.9rem;font-weight:400;color:var(--muted)}
+.plan-desc{font-size:.8rem;color:var(--muted);margin:1rem 0}
+.plan-features{list-style:none;font-size:.8rem;display:flex;flex-direction:column;gap:.4rem;margin-bottom:1.2rem;color:var(--text)}
+.plan-features li::before{content:"✓ ";color:var(--accent2)}
+.plan-btn{width:100%;padding:.6rem;border-radius:8px;border:1px solid var(--accent);background:transparent;color:var(--accent);cursor:pointer;font-size:.85rem;font-weight:500;transition:background .2s}
+.plan-btn:hover{background:var(--accent);color:#fff}
+.plan-card.featured .plan-btn{background:var(--accent);color:#fff}
+
+.portfolio-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem}
+.port-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:1.2rem;transition:border-color .2s;backdrop-filter:blur(4px)}
+.port-card:hover{border-color:var(--accent2)}
+.port-name{font-size:.85rem;font-weight:600;margin-bottom:.3rem;color:var(--text)}
+.port-yield{font-size:1.3rem;font-weight:700;color:var(--accent2)}
+.port-yield span{font-size:.75rem;font-weight:400;color:var(--muted)}
+.port-meta{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.6rem}
+.port-tag{font-size:.7rem;background:rgba(16,185,129,.1);color:#10b981;padding:.2rem .5rem;border-radius:4px}
+
+.bots-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.2rem}
+.bot-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:1.3rem;transition:border-color .2s;backdrop-filter:blur(4px)}
+.bot-card:hover{border-color:var(--accent)}
+.bot-header{display:flex;align-items:center;gap:.8rem;margin-bottom:.8rem}
+.bot-avatar{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85rem;flex-shrink:0;color:#fff}
+.bot-name{font-size:.9rem;font-weight:600;color:var(--text)}
+.bot-status{font-size:.7rem;color:var(--accent2)}
+.bot-yield{font-size:1.2rem;font-weight:700;color:var(--accent);margin-bottom:.4rem}
+.bot-yield span{font-size:.75rem;color:var(--muted);font-weight:400}
+.bot-pairs{font-size:.75rem;color:var(--muted)}
+.bot-risk{display:flex;gap:.3rem;margin-top:.6rem}
+.risk-dot{width:8px;height:8px;border-radius:50%}
+
+.asset-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem}
+.asset-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:1.2rem;transition:border-color .2s;backdrop-filter:blur(4px)}
+.asset-card:hover{border-color:var(--accent)}
+.asset-icon{font-size:1.4rem;margin-bottom:.6rem}
+.asset-name{font-size:.9rem;font-weight:600;margin-bottom:.3rem;color:var(--text)}
+.asset-desc{font-size:.75rem;color:var(--muted)}
+.asset-vol{font-size:.7rem;margin-top:.6rem;padding:.2rem .5rem;border-radius:4px;display:inline-block}
+.vol-low{background:rgba(16,185,129,.1);color:#10b981}
+.vol-med{background:rgba(234,179,8,.1);color:#eab308}
+.vol-high{background:rgba(244,63,94,.1);color:#f43f5e}
+
+.team-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.5rem}
+.team-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;text-align:center;transition:border-color .2s;backdrop-filter:blur(4px)}
+.team-card:hover{border-color:var(--accent)}
+.avatar{width:64px;height:64px;border-radius:50%;margin:0 auto 1rem;display:flex;align-items:center;justify-content:center;font-size:1.3rem;font-weight:700;color:#fff}
+.team-name{font-weight:600;font-size:.95rem;margin-bottom:.2rem;color:var(--text)}
+.team-role{font-size:.78rem;color:var(--accent);margin-bottom:.5rem}
+.team-bio{font-size:.78rem;color:var(--muted)}
+
+.alt-section{background:rgba(26,38,64,0.5);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+
+footer{border-top:1px solid var(--border);padding:3rem 4rem;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:2rem;background:rgba(15,23,42,0.97)}
+.footer-brand .logo{font-size:1.3rem;margin-bottom:.8rem;display:block}
+.footer-brand p{font-size:.82rem;color:var(--muted)}
+.footer-col h4{font-size:.85rem;font-weight:600;margin-bottom:1rem;color:var(--text)}
+.footer-col a{display:block;font-size:.82rem;color:var(--muted);margin-bottom:.5rem}
+.footer-col a:hover{color:var(--text)}
+.footer-bottom{border-top:1px solid var(--border);padding:1.5rem 4rem;display:flex;justify-content:space-between;font-size:.78rem;color:var(--muted);background:rgba(15,23,42,0.97)}
+.disclaimer{font-size:.72rem;color:var(--muted);background:rgba(244,63,94,.06);border:1px solid rgba(244,63,94,.2);border-radius:8px;padding:1rem 1.5rem;margin:0 4rem 2rem;line-height:1.5}
+
+@media(max-width:700px){
+  nav,section,footer,.footer-bottom{padding-left:1.5rem;padding-right:1.5rem}
+  .hero{padding:3rem 1.5rem 2rem}
+  .hero h1{font-size:2rem}
+  footer{grid-template-columns:1fr 1fr}
+  .nav-links{display:none}
+  .disclaimer{margin:0 1.5rem 2rem}
+  .section-title{font-size:1.8rem}
+}
+</style>
+</head>
+<body>
+
+<div class="bg-grid"></div>
+<div class="bg-glow1"></div>
+<div class="bg-glow2"></div>
+
+<div class="page-wrap">
+
+<nav>
+  <div class="logo">Nex<span>Trade</span></div>
+  <div class="nav-links">
+    <a href="#">Markets</a><a href="#">Trading</a><a href="#">Plans</a><a href="#">About</a>
+  </div>
+  <div class="nav-cta">
+    <button class="btn btn-ghost">Login</button>
+    <button class="btn btn-primary">Open Account</button>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-badge">🔒 SEC Regulated &nbsp;•&nbsp; Forex · Stocks · Crypto</div>
+  <h1>One Platform.<br><span>Every Market.</span></h1>
+  <p>Trade forex, global stocks, and cryptocurrency with institutional-grade tools and real-time data. Built for serious investors.</p>
+  <div class="hero-btns">
+    <button class="btn btn-primary">Start Investing</button>
+    <button class="btn btn-ghost">View Markets</button>
+  </div>
+  <div class="stats-row">
+    <div class="stat"><div class="stat-num">120+</div><div class="stat-label">Countries</div></div>
+    <div class="stat"><div class="stat-num">$4B+</div><div class="stat-label">Volume</div></div>
+    <div class="stat"><div class="stat-num">0%</div><div class="stat-label">Commission</div></div>
+    <div class="stat"><div class="stat-num">24/7</div><div class="stat-label">Support</div></div>
+  </div>
+</div>
+
+<div class="ticker-wrap">
+  <div class="ticker-track" id="ticker"></div>
+</div>
+
+<!-- WHY WE STAND OUT -->
+<section>
+  <div class="sec-head">
+    <div class="section-label">Why choose us</div>
+    <div class="section-title">Why We Stand Out</div>
+    <div class="section-sub">Access diverse financial markets through one secure, transparent platform designed for both new and experienced traders.</div>
+    <div class="title-line"></div>
+  </div>
+  <div class="features-grid">
+    <div class="feat-card"><div class="feat-icon">📈</div><h3>Global Stocks</h3><p>NYSE, NASDAQ & LSE access with fractional shares from $1.</p></div>
+    <div class="feat-card"><div class="feat-icon">💱</div><h3>Forex Trading</h3><p>50+ currency pairs with raw spreads from 0.0 pips.</p></div>
+    <div class="feat-card"><div class="feat-icon">₿</div><h3>Crypto Futures</h3><p>Perpetual contracts on top crypto assets with advanced order types.</p></div>
+    <div class="feat-card"><div class="feat-icon">🛡️</div><h3>Bank-grade Security</h3><p>AES-256 encryption and multi-signature cold storage wallets.</p></div>
+    <div class="feat-card"><div class="feat-icon">⚡</div><h3>Fast Execution</h3><p>Low-latency engine ensures you get the price you see.</p></div>
+    <div class="feat-card"><div class="feat-icon">📊</div><h3>Portfolio Tools</h3><p>Professional charting, analytics, and portfolio tracking in one view.</p></div>
+  </div>
+</section>
+
+<!-- MOMENTUM TRACKER -->
+<section class="alt-section">
+  <div class="sec-head">
+    <div class="section-label">Real-time velocity</div>
+    <div class="section-title">Market Momentum Tracker</div>
+    <div class="section-sub">Identify high-volatility opportunities across 1,000+ assets with our live institutional screener.</div>
+    <div class="title-line"></div>
+  </div>
+  <div class="momentum-grid" id="momentum-grid"></div>
+</section>
+
+<!-- INSTITUTIONAL PORTFOLIOS -->
+<section>
+  <div class="sec-head">
+    <div class="section-label">Managed portfolios</div>
+    <div class="section-title">Institutional Portfolios</div>
+    <div class="section-sub">Professionally managed investment strategies. We handle the complexity, you secure the returns.</div>
+    <div class="title-line"></div>
+  </div>
+  <div class="portfolio-grid" id="portfolio-grid"></div>
+</section>
+
+<!-- PLANS -->
+<section class="alt-section">
+  <div class="sec-head">
+    <div class="section-label">Investment plans</div>
+    <div class="section-title">Choose Your Plan</div>
+    <div class="section-sub">Transparent, fixed-return plans built on verified asset strategies. Pick what suits your risk appetite.</div>
+    <div class="title-line"></div>
+  </div>
+  <div class="plans-grid" id="plans-grid"></div>
+</section>
+
+<!-- TOP PERFORMERS -->
+<section>
+  <div class="sec-head">
+    <div class="section-label">Trading bots</div>
+    <div class="section-title">Our Top Performers</div>
+    <div class="section-sub">Automated bots running 24/7 across top crypto and forex markets with full transparency.</div>
+    <div class="title-line"></div>
+  </div>
+  <div class="bots-grid" id="bots-grid"></div>
+</section>
+
+<!-- GLOBAL COVERAGE -->
+<section class="alt-section">
+  <div class="sec-head">
+    <div class="section-label">Global coverage</div>
+    <div class="section-title">Diversify Across Every Asset</div>
+    <div class="section-sub">From bonds to crypto futures — build your ultimate portfolio across all major asset classes.</div>
+    <div class="title-line"></div>
+  </div>
+  <div class="asset-grid">
+    <div class="asset-card"><div class="asset-icon">📊</div><div class="asset-name">Stocks & ETFs</div><div class="asset-desc">Ownership in high-growth publicly traded companies.</div><span class="asset-vol vol-med">Medium volatility</span></div>
+    <div class="asset-card"><div class="asset-icon">₿</div><div class="asset-name">Crypto Assets</div><div class="asset-desc">Digital assets with high growth potential on blockchain.</div><span class="asset-vol vol-high">High volatility</span></div>
+    <div class="asset-card"><div class="asset-icon">💱</div><div class="asset-name">Forex</div><div class="asset-desc">Major, Minor and Exotic currency pairs, tight spreads.</div><span class="asset-vol vol-med">Medium volatility</span></div>
+    <div class="asset-card"><div class="asset-icon">🏠</div><div class="asset-name">Real Estate</div><div class="asset-desc">Property-backed investments with rental income.</div><span class="asset-vol vol-low">Low volatility</span></div>
+    <div class="asset-card"><div class="asset-icon">📜</div><div class="asset-name">Fixed Income</div><div class="asset-desc">Government and corporate bonds for stable returns.</div><span class="asset-vol vol-low">Low volatility</span></div>
+    <div class="asset-card"><div class="asset-icon">🥇</div><div class="asset-name">Commodities</div><div class="asset-desc">Gold, silver, oil — inflation hedges and tangible assets.</div><span class="asset-vol vol-med">Medium volatility</span></div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section>
+  <div class="sec-head">
+    <div class="section-label">Architects of finance</div>
+    <div class="section-title">The Minds Behind the Platform</div>
+    <div class="section-sub">Our leadership team combines decades of experience across traditional finance, blockchain, and quantitative research.</div>
+    <div class="title-line"></div>
+  </div>
+  <div class="team-grid">
+    <div class="team-card"><div class="avatar" style="background:#1d4ed8">MS</div><div class="team-name">Marcus Sterling</div><div class="team-role">Founder & CEO</div><div class="team-bio">Former head of Systematic Trading at a Tier-1 investment bank. Founded NexTrade to democratize institutional-grade investing.</div></div>
+    <div class="team-card"><div class="avatar" style="background:#0f766e">EV</div><div class="team-name">Elena Vance</div><div class="team-role">Chief Technology Officer</div><div class="team-bio">Cybersecurity architect with 15+ years in distributed ledger technology and high-performance matching engines.</div></div>
+    <div class="team-card"><div class="avatar" style="background:#7c3aed">JT</div><div class="team-name">Dr. Julian Thorne</div><div class="team-role">Head of Strategy</div><div class="team-bio">PhD in Quantitative Finance. Oversees algorithmic model development and institutional risk management protocols.</div></div>
+    <div class="team-card"><div class="avatar" style="background:#b45309">SJ</div><div class="team-name">Sarah Jenkins</div><div class="team-role">Global Operations</div><div class="team-bio">Leads legal and regulatory frameworks ensuring full compliance with international financial standards.</div></div>
+  </div>
+</section>
+
+<div class="disclaimer">
+  <strong style="color:var(--text)">Risk Disclaimer:</strong> Trading forex, stocks, and cryptocurrency involves significant risk and may not be suitable for all investors. Past performance is not indicative of future results. You may lose some or all of your invested capital. Please ensure you fully understand the risks involved before trading.
+</div>
+
+<footer>
+  <div class="footer-brand">
+    <span class="logo">Nex<span>Trade</span></span>
+    <p>The next generation of multi-asset trading. Secure, transparent, and built for everyone.</p>
+  </div>
+  <div class="footer-col">
+    <h4>Markets</h4>
+    <a href="#">Stocks & ETFs</a><a href="#">Forex Trading</a><a href="#">Crypto Assets</a><a href="#">Commodities</a>
+  </div>
+  <div class="footer-col">
+    <h4>Platform</h4>
+    <a href="#">Investment Plans</a><a href="#">Trading Bots</a><a href="#">Copy Trading</a><a href="#">Pro Terminal</a>
+  </div>
+  <div class="footer-col">
+    <h4>Company</h4>
+    <a href="#">About Us</a><a href="#">Regulation</a><a href="#">Contact</a><a href="#">Privacy Policy</a>
+  </div>
+</footer>
+<div class="footer-bottom">
+  <span>© 2026 NexTrade. All rights reserved.</span>
+  <span>Regulated · Compliant · Trusted</span>
+</div>
+</div>
+
+<script>
+const tickers=[
+  {s:"BTC/USDT",p:"67,420.50",c:"+2.14%",up:true},{s:"ETH/USDT",p:"3,512.80",c:"-0.82%",up:false},
+  {s:"AAPL",p:"189.45",c:"+1.20%",up:true},{s:"TSLA",p:"248.30",c:"-1.65%",up:false},
+  {s:"EUR/USD",p:"1.0872",c:"+0.31%",up:true},{s:"GBP/USD",p:"1.2654",c:"-0.12%",up:false},
+  {s:"NVDA",p:"875.60",c:"+3.40%",up:true},{s:"XRP/USDT",p:"0.5841",c:"+5.20%",up:true},
+  {s:"MSFT",p:"414.20",c:"+0.88%",up:true},{s:"SOL/USDT",p:"148.90",c:"-2.10%",up:false},
+  {s:"AMZN",p:"183.75",c:"+1.55%",up:true},{s:"USD/JPY",p:"149.32",c:"+0.20%",up:true},
+  {s:"GOOGL",p:"163.20",c:"-0.45%",up:false},{s:"BNB/USDT",p:"412.10",c:"+1.80%",up:true},
+  {s:"META",p:"495.80",c:"+2.30%",up:true},
+];
+const track=document.getElementById('ticker');
+let th='';
+[...tickers,...tickers].forEach(t=>{
+  th+=`<div class="ticker-item"><span class="ticker-sym">${t.s}</span><span class="ticker-price"> $${t.p}</span><span class="${t.up?'up':'down'}"> ${t.c}</span></div>`;
+});
+track.innerHTML=th;
+
+const momentum=[
+  {s:"BTC",p:"$67,420",c:"+2.1%",up:true,w:72},{s:"ETH",p:"$3,512",c:"-0.8%",up:false,w:45},
+  {s:"NVDA",p:"$875",c:"+3.4%",up:true,w:88},{s:"AAPL",p:"$189",c:"+1.2%",up:true,w:61},
+  {s:"SOL",p:"$148",c:"-2.1%",up:false,w:38},{s:"TSLA",p:"$248",c:"-1.6%",up:false,w:30},
+  {s:"MSFT",p:"$414",c:"+0.9%",up:true,w:55},{s:"XRP",p:"$0.58",c:"+5.2%",up:true,w:95},
+];
+document.getElementById('momentum-grid').innerHTML=momentum.map(m=>`
+  <div class="m-card">
+    <div class="m-sym">${m.s}</div>
+    <div class="m-price">${m.p}</div>
+    <div class="${m.up?'up':'down'}" style="font-size:.85rem;font-weight:600">${m.c}</div>
+    <div class="m-bar"><div class="m-bar-fill" style="width:${m.w}%;background:${m.up?'#10b981':'#f43f5e'}"></div></div>
+  </div>`).join('');
+
+const portfolios=[
+  {n:"Savings Plus",y:"3.5%",d:"30 days",min:"$50",type:"Conservative"},
+  {n:"Growth Crypto",y:"18%",d:"90 days",min:"$100",type:"Growth"},
+  {n:"Forex Yield",y:"8%",d:"60 days",min:"$200",type:"Balanced"},
+  {n:"S&P Tracker",y:"12%",d:"1 year",min:"$500",type:"Balanced"},
+  {n:"Green Energy",y:"10%",d:"2 years",min:"$250",type:"Growth"},
+  {n:"Bond Reserve",y:"4.5%",d:"180 days",min:"$100",type:"Conservative"},
+];
+document.getElementById('portfolio-grid').innerHTML=portfolios.map(p=>`
+  <div class="port-card">
+    <div class="port-name">${p.n}</div>
+    <div class="port-yield">${p.y} <span>ROI</span></div>
+    <div class="port-meta">
+      <span class="port-tag">${p.type}</span>
+      <span class="port-tag">${p.d}</span>
+      <span class="port-tag">Min ${p.min}</span>
+    </div>
+  </div>`).join('');
+
+const plans=[
+  {n:"Starter",roi:"3.5%",per:"/ month",desc:"Ideal for new investors. Stable, low-risk returns backed by diversified bonds.",feats:["Capital returned","Monthly payouts","Min $50 entry"],featured:false},
+  {n:"Growth",roi:"12%",per:"/ month",desc:"Balanced exposure to equities and crypto for above-average steady returns.",feats:["Capital returned","Weekly payouts","Min $200 entry"],featured:true},
+  {n:"Pro",roi:"22%",per:"/ month",desc:"High-yield active strategy across crypto futures and emerging markets.",feats:["Capital returned","Daily payouts","Min $500 entry"],featured:false},
+];
+document.getElementById('plans-grid').innerHTML=plans.map(p=>`
+  <div class="plan-card${p.featured?' featured':''}">
+    ${p.featured?'<div class="plan-badge">Most Popular</div>':''}
+    <div class="plan-name">${p.n}</div>
+    <div class="plan-roi">${p.roi}<span> ${p.per}</span></div>
+    <div class="plan-desc">${p.desc}</div>
+    <ul class="plan-features">${p.feats.map(f=>`<li>${f}</li>`).join('')}</ul>
+    <button class="plan-btn">Get Started</button>
+  </div>`).join('');
+
+const bots=[
+  {n:"Alpha Scalper",s:"OPTIMAL",pairs:"BTC · ETH · SOL",yield:"18–22%",risk:3,color:"#1d4ed8"},
+  {n:"Forex Pro Bot",s:"OPTIMAL",pairs:"EUR/USD · GBP/USD",yield:"8–12%",risk:2,color:"#0f766e"},
+  {n:"Momentum Bot",s:"RUNNING",pairs:"XRP · BNB · AVAX",yield:"25–30%",risk:4,color:"#7c3aed"},
+];
+document.getElementById('bots-grid').innerHTML=bots.map(b=>{
+  const dots=Array.from({length:5},(_,i)=>`<div class="risk-dot" style="background:${i<b.risk?b.color:'#1e3a5f'}"></div>`).join('');
+  return`<div class="bot-card">
+    <div class="bot-header">
+      <div class="bot-avatar" style="background:${b.color}">${b.n[0]}</div>
+      <div><div class="bot-name">${b.n}</div><div class="bot-status">● ${b.s}</div></div>
+    </div>
+    <div class="bot-yield">${b.yield}% <span>daily yield</span></div>
+    <div class="bot-pairs">${b.pairs}</div>
+    <div class="bot-risk">${dots}</div>
+    <button class="plan-btn" style="margin-top:.8rem">Activate Bot</button>
+  </div>`;}).join('');
+</script>
+</body>
+</html>

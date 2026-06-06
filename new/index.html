@@ -456,7 +456,7 @@ function makeCard(sym, price, change24h, isUp) {
 // Fetch crypto prices from CoinGecko (free, no key)
 async function fetchCrypto() {
   const ids = 'bitcoin,ethereum,solana,ripple,binancecoin,cardano';
-  const url = `https://api.coingecko.com/api/v3/simple/price?ids=${ids}&vs_currencies=usd&include_24hr_change=true`;
+  const url = `https://api.coingecko.com/api/v3/simple/price?ids=${ids}&vs_currencies=usd&include_24hr_change=true&x_cg_demo_api_key=CG-ZxHywk4sdqq7a6ossrAKT5Yy`;
   const res = await fetch(url);
   if (!res.ok) throw new Error('CoinGecko error');
   return await res.json();

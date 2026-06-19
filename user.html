@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nextrade — User Dashboard</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(99, 102, 241, 0.2); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(99, 102, 241, 0.4); }
+        @keyframes blob {
+            0%, 100% { transform: translate(0px, 0px) scale(1); }
+            33% { transform: translate(30px, -40px) scale(1.05); }
+            66% { transform: translate(-20px, 20px) scale(0.95); }
+        }
+        .animate-blob { animation: blob 10s infinite alternate; }
+    </style>
+</head>
+<body class="bg-[#0b0f19] text-gray-200 antialiased min-h-screen flex overflow-hidden">
+
+    <!-- Ambient Glow Backgrounds -->
+    <div class="fixed top-[-10%] left-[-10%] w-[50vh] h-[50vh] bg-indigo-600/10 rounded-full blur-[120px] animate-blob pointer-events-none"></div>
+    <div class="fixed bottom-[-10%] right-[-10%] w-[50vh] h-[50vh] bg-emerald-500/10 rounded-full blur-[120px] animate-blob animation-delay-2000 pointer-events-none"></div>
+
+    <!-- PRELOADER -->
+    <div id="preloader" class="fixed inset-0 z-[99999] bg-[#070a12] flex flex-col items-center justify-center transition-all duration-500">
+        <div class="relative w-20 h-20 mb-4">
+            <div class="absolute inset-0 border-4 border-indigo-600/20 rounded-full"></div>
+            <div class="absolute inset-0 border-4 border-transparent border-t-indigo-500 rounded-full animate-spin"></div>
+        </div>
+        <h2 class="text-lg font-bold text-white tracking-widest uppercase animate-pulse">Nextrade</h2>
+        <p class="text-xs text-gray-500 mt-1 tracking-wider uppercase">Syncing Safe Environment...</p>
+    </div>
+
+    <!-- SIDEBAR -->
+    <aside class="hidden lg:flex flex-col w-72 bg-[#111827]/60 border-r border-white/5 h-screen sticky top-0 z-30 backdrop-blur-xl">
+        <div class="h-20 flex items-center px-8 border-b border-white/5">
+            <a href="#" class="flex items-center gap-2 font-bold text-xl text-white tracking-wider">
+                <span class="bg-gradient-to-r from-indigo-500 to-purple-600 w-8 h-8 rounded-lg flex items-center justify-center text-sm font-black">N</span>
+                NEXTRADE
+            </a>
+        </div>
+        <nav class="flex-1 overflow-y-auto py-6 px-4 space-y-1">
+            <p class="px-4 text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-3">Main Navigation</p>
+            
+            <a href="#" class="flex items-center gap-3 px-4 py-3.5 rounded-xl text-sm font-medium transition-all bg-indigo-600 text-white shadow-lg shadow-indigo-600/20">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2H6a2 2 0 01-2-2V16zM14 16a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2h-2a2 2 0 01-2-2V16z"></path></svg>
+                Dashboard
+            </a>
+
+            <!-- Dropdown Menu Block Concept -->
+            <div class="space-y-1">
+                <button onclick="toggleDropdown('deposit-menu')" class="w-full flex items-center justify-between px-4 py-3.5 rounded-xl text-sm font-medium text-gray-400 hover:text-white hover:bg-white/5 transition-all">
+                    <div class="flex items-center gap-3">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path></svg>
+                        <span>Deposits</span>
+                    </div>
+                    <svg class="w-4 h-4 transition-transform" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+                <div id="deposit-menu" class="hidden pl-12 pr-2 space-y-1">
+                    <a href="#" class="block py-2 text-xs text-gray-400 hover:text-white transition-all">New Deposit</a>
+                    <a href="#" class="block py-2 text-xs text-gray-400 hover:text-white transition-all">Deposit Records</a>
+                </div>
+            </div>
+
+            <a href="#" class="flex items-center gap-3 px-4 py-3.5 rounded-xl text-sm font-medium text-gray-400 hover:text-white hover:bg-white/5 transition-all">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+                Trading View
+            </a>
+
+            <a href="#" class="flex items-center gap-3 px-4 py-3.5 rounded-xl text-sm font-medium text-gray-400 hover:text-white hover:bg-white/5 transition-all">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                Settings
+            </a>
+        </nav>
+    </aside>
+
+    <!-- MAIN BODY AREA -->
+    <main class="flex-1 flex flex-col h-screen overflow-y-auto">
+        <!-- TOP HEADER NAVBAR -->
+        <header class="h-20 border-b border-white/5 bg-[#111827]/40 backdrop-blur-xl flex items-center justify-between px-6 lg:px-10 sticky top-0 z-20">
+            <h1 class="text-lg font-semibold text-white">Welcome back, Trader</h1>
+            
+            <div class="flex items-center gap-4">
+                <!-- Notifications Asset -->
+                <button class="relative p-2 text-gray-400 hover:text-white transition-all bg-white/5 rounded-xl border border-white/5">
+                    <span class="absolute top-1.5 right-2 w-2 h-2 bg-indigo-500 rounded-full"></span>
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
+                </button>
+                <!-- Profile Block -->
+                <div class="flex items-center gap-3 pl-3 border-l border-white/10">
+                    <div class="w-10 h-10 rounded-xl bg-indigo-600/30 border border-indigo-500/30 flex items-center justify-center text-indigo-400 font-bold text-sm">US</div>
+                    <div class="hidden md:block text-left">
+                        <p class="text-xs font-semibold text-white">user_0921</p>
+                        <p class="text-[10px] text-emerald-400 font-medium">Verified Account</p>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- DASHBOARD CONTAINER CONTENT -->
+        <div class="p-6 lg:p-10 space-y-8 max-w-7xl w-full mx-auto flex-1">
+            
+            <!-- SUMMARY WIDGETSGRID -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Card 1: Balance -->
+                <div class="bg-[#111827]/40 border border-white/5 rounded-2xl p-6 relative overflow-hidden backdrop-blur-md">
+                    <div class="absolute top-0 right-0 p-6 opacity-10 text-indigo-500">
+                        <svg class="w-16 h-16" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    </div>
+                    <p class="text-xs font-medium text-gray-400 uppercase tracking-wider">Available Balance</p>
+                    <h3 class="text-3xl font-bold text-white mt-2 tracking-tight">$14,250.00</h3>
+                    <p class="text-xs text-emerald-400 font-medium mt-2 flex items-center gap-1">
+                        <span>↑ +12.4%</span> <span class="text-gray-500">from last week</span>
+                    </p>
+                </div>
+
+                <!-- Card 2: Managed Equity -->
+                <div class="bg-[#111827]/40 border border-white/5 rounded-2xl p-6 relative overflow-hidden backdrop-blur-md">
+                    <p class="text-xs font-medium text-gray-400 uppercase tracking-wider">Invested Equity</p>
+                    <h3 class="text-3xl font-bold text-white mt-2 tracking-tight">$5,000.00</h3>
+                    <p class="text-xs text-indigo-400 font-medium mt-2 flex items-center gap-1">
+                        <span>Active Strategy Plan</span>
+                    </p>
+                </div>
+
+                <!-- Card 3: Live Trades -->
+                <div class="bg-[#111827]/40 border border-white/5 rounded-2xl p-6 relative overflow-hidden backdrop-blur-md">
+                    <p class="text-xs font-medium text-gray-400 uppercase tracking-wider">Total Yield Earned</p>
+                    <h3 class="text-3xl font-bold text-emerald-400 mt-2 tracking-tight">+$1,840.25</h3>
+                    <p class="text-xs text-gray-400 font-medium mt-2">Payout Method: Instant Secure Wallet</p>
+                </div>
+            </div>
+
+            <!-- ACTION HUB PANELS -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Main Activity Panel Table -->
+                <div class="lg:col-span-2 bg-[#111827]/40 border border-white/5 rounded-2xl p-6 backdrop-blur-md">
+                    <div class="flex items-center justify-between mb-6">
+                        <h4 class="text-sm font-semibold text-white uppercase tracking-wider">Recent System Actions</h4>
+                        <a href="#" class="text-xs text-indigo-400 hover:underline">View All logs</a>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-sm text-gray-400">
+                            <thead>
+                                <tr class="border-b border-white/5 text-[11px] text-gray-500 uppercase tracking-wider">
+                                    <th class="pb-3 font-medium">Reference ID</th>
+                                    <th class="pb-3 font-medium">Type</th>
+                                    <th class="pb-3 font-medium">Value</th>
+                                    <th class="pb-3 font-medium text-right">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-white/5">
+                                <tr>
+                                    <td class="py-3.5 font-medium text-white">#NT-98210</td>
+                                    <td class="py-3.5">USDT Deposit</td>
+                                    <td class="py-3.5 text-emerald-400">+$2,500.00</td>
+                                    <td class="py-3.5 text-right"><span class="bg-emerald-500/10 text-emerald-400 px-2.5 py-1 rounded-full text-[10px] font-semibold uppercase">Approved</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="py-3.5 font-medium text-white">#NT-97104</td>
+                                    <td class="py-3.5">Futures Trade Margin</td>
+                                    <td class="py-3.5 text-rose-400">-$350.00</td>
+                                    <td class="py-3.5 text-right"><span class="bg-indigo-500/10 text-indigo-400 px-2.5 py-1 rounded-full text-[10px] font-semibold uppercase">Settled</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="py-3.5 font-medium text-white">#NT-96349</td>
+                                    <td class="py-3.5">Account Yield Compounded</td>
+                                    <td class="py-3.5 text-emerald-400">+$45.12</td>
+                                    <td class="py-3.5 text-right"><span class="bg-emerald-500/10 text-emerald-400 px-2.5 py-1 rounded-full text-[10px] font-semibold uppercase">Approved</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Side Direct Action Box -->
+                <div class="bg-gradient-to-b from-[#1e1b4b]/40 to-[#111827]/40 border border-indigo-500/10 rounded-2xl p-6 backdrop-blur-md flex flex-col justify-between">
+                    <div>
+                        <h4 class="text-sm font-semibold text-white uppercase tracking-wider mb-2">Instant Operations</h4>
+                        <p class="text-xs text-gray-400 leading-relaxed">Directly clear funding margins or allocate assets into Nextrade execution pools instantly.</p>
+                    </div>
+                    <div class="space-y-3 mt-6">
+                        <button onclick="openActionModal('Deposit')" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-medium text-sm py-3 rounded-xl transition-all shadow-lg shadow-indigo-600/10">
+                            Initialize Funding Deposit
+                        </button>
+                        <button onclick="openActionModal('Withdrawal')" class="w-full bg-white/5 hover:bg-white/10 text-white font-medium text-sm py-3 rounded-xl transition-all border border-white/5">
+                            Request Clean Payout
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- DYNAMIC FORM OPERATION MODAL (SWEETALERT REPLACEMENT MODEL) -->
+    <div id="operation-modal" class="hidden fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm items-center justify-center p-4 transition-all">
+        <div class="bg-[#111827] border border-white/10 rounded-2xl w-full max-w-md overflow-hidden shadow-2xl">
+            <div class="p-6 border-b border-white/5 flex justify-between items-center">
+                <h3 class="text-base font-bold text-white uppercase tracking-wider" id="modal-title">Initialize Operation</h3>
+                <button onclick="closeActionModal()" class="text-gray-400 hover:text-white transition-all">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            <div class="p-6 space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Target Asset Currency</label>
+                    <select class="w-full bg-[#1f2937] border border-white/5 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-indigo-500">
+                        <option>USDT (Tether ERC-20)</option>
+                        <option>BTC (Bitcoin Native)</option>
+                        <option>ETH (Ethereum Layer-1)</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Transaction Quantity ($)</label>
+                    <input type="number" placeholder="Min. 100" class="w-full bg-[#1f2937] border border-white/5 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-indigo-500">
+                </div>
+                <button class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-sm py-3 rounded-xl transition-all mt-2">
+                    Confirm Nextrade Execution
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC CONTROLS -->
+    <script>
+        // Smooth Preloader Clear Execution
+        window.addEventListener('load', () => {
+            const preloader = document.getElementById('preloader');
+            setTimeout(() => {
+                preloader.style.opacity = '0';
+                setTimeout(() => preloader.style.display = 'none', 500);
+            }, 800);
+        });
+
+        // Toggle Sidebar Nav Menus Accurately
+        function toggleDropdown(id) {
+            const targetMenu = document.getElementById(id);
+            if(targetMenu.classList.contains('hidden')) {
+                targetMenu.classList.remove('hidden');
+            } else {
+                targetMenu.classList.add('hidden');
+            }
+        }
+
+        // Operational Modals Controllers
+        function openActionModal(actionName) {
+            document.getElementById('modal-title').innerText = `Initialize ${actionName}`;
+            const modal = document.getElementById('operation-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeActionModal() {
+            const modal = document.getElementById('operation-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+    </script>
+</body>
+</html>

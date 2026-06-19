@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sign In | NexTrade</title>
+  
+  <!-- Inter & Roboto Mono Fonts for that clean, premium tech look -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+  
+  <!-- Core Tailwind CSS CDN for Layout Grid Structure -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <style>
+    /* NEXTRADE BRAND COLOR OVERRIDES (Blue & White Theme) */
+    :root {
+      --bg-dark-primary: #0a0f1d;      /* Deep midnight blue background */
+      --bg-dark-secondary: #131b2e;    /* Subtle panel blue background */
+      --brand-blue-glow: #2563eb;      /* Vibrant NexTrade focus blue */
+      --brand-blue-accent: #3b82f6;    /* Secondary crisp blue */
+      --brand-blue-light: #60a5fa;     /* Light highlight blue */
+      --text-main: #ffffff;            /* Pure white */
+      --text-muted: #94a3b8;           /* Subtle silver-gray */
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-dark-primary);
+      color: var(--text-main);
+    }
+    
+    .font-mono {
+      font-family: 'Roboto Mono', monospace;
+    }
+
+    /* Custom Input overrides for a calm, premium aesthetic */
+    .brand-input {
+      background-color: rgba(10, 15, 29, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: var(--text-main);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .brand-input:focus {
+      border-color: var(--brand-blue-accent);
+      box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+      outline: none;
+    }
+
+    /* Primary Interactive Buttons */
+    .btn-brand-primary {
+      background: linear-gradient(135deg, var(--brand-blue-accent), var(--brand-blue-glow));
+      color: #ffffff;
+      transition: all 0.3s ease;
+    }
+    .btn-brand-primary:hover {
+      background: linear-gradient(135deg, var(--brand-blue-light), var(--brand-blue-accent));
+      transform: translateY(-1px);
+      box-shadow: 0 4px 20px rgba(37, 99, 235, 0.3);
+    }
+
+    /* Soft Animated Background Blurs */
+    @keyframes slow-pulse {
+      0%, 100% { opacity: 0.2; transform: scale(1); }
+      50% { opacity: 0.35; transform: scale(1.05); }
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+    .animate-pulse-slow { animation: slow-pulse 8s infinite ease-in-out; }
+    .animate-float { animation: float 6s infinite ease-in-out; }
+    
+    /* Logo styling matching your header components */
+    .logo {
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      color: var(--text-main);
+    }
+    .logo span {
+      color: var(--brand-blue-accent);
+    }
+  </style>
+</head>
+
+<body class="h-screen overflow-hidden antialiased">
+  <div class="flex h-full w-full relative overflow-hidden">
+    
+    <!-- BACKGROUND GRAPHICS LAYER -->
+    <div class="absolute top-0 left-0 w-full h-full overflow-hidden z-0 pointer-events-none">
+      <!-- Subtle Tech Grid Line Mesh Overlay -->
+      <div class="absolute inset-0 opacity-20" style="background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTTAgNDBMMCAwTDQwIDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgyNTUsIDI1NSwgMjU1LCAwLjAzKSIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyaWQpIiAvPjwvc3ZnPg==');"></div>
+      
+      <!-- Deep Blue Brand Fluid Lighting Effect -->
+      <div class="absolute -top-[10%] -left-[10%] w-[70vw] h-[70vw] rounded-full bg-gradient-to-br from-blue-600/15 via-indigo-600/10 to-transparent blur-[120px] mix-blend-screen animate-pulse-slow"></div>
+      <div class="absolute top-[20%] -right-[10%] w-[60vw] h-[60vw] rounded-full bg-gradient-to-bl from-blue-500/10 via-cyan-500/5 to-transparent blur-[100px] mix-blend-screen animate-float"></div>
+      <div class="absolute -bottom-[20%] left-[20%] w-[70vw] h-[70vw] rounded-full bg-gradient-to-t from-blue-900/10 via-transparent to-transparent blur-[110px] mix-blend-screen"></div>
+    </div>
+
+    <!-- LEFT COMPONENT: CALM INSPIRATIONAL PANEL (Hidden on Mobile) -->
+    <div class="hidden lg:flex lg:w-1/2 relative items-center justify-center p-12 z-10">
+      <div class="relative z-20 max-w-lg text-center">
+        
+        <!-- Interactive Artwork Orb Wrapper -->
+        <div class="mb-12 relative group cursor-pointer">
+          <div class="absolute inset-0 bg-gradient-to-r from-blue-600 via-indigo-500 to-cyan-400 blur-3xl opacity-20 rounded-full group-hover:opacity-35 transition-opacity duration-700"></div>
+          <div class="relative z-10 w-72 h-72 mx-auto rounded-full p-1 bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-md ring-1 ring-white/10 overflow-hidden shadow-2xl animate-float transition-transform duration-500 group-hover:scale-105">
+            <!-- Sleek, dark dynamic visual element substituting the portrait -->
+            <div class="w-full h-full rounded-full bg-[#0c1324] flex flex-col items-center justify-center p-6 border border-blue-500/20">
+              <div class="text-4xl font-bold tracking-tight text-white mb-2">Nex<span class="text-blue-500">Trade</span></div>
+              <div class="text-xs font-mono text-slate-400 uppercase tracking-widest">Global Markets Portal</div>
+              <div class="mt-6 flex gap-1 items-end h-8">
+                <div class="w-1 bg-blue-500/40 h-4 rounded animate-pulse"></div>
+                <div class="w-1 bg-blue-500 h-7 rounded"></div>
+                <div class="w-1 bg-blue-400 h-5 rounded"></div>
+                <div class="w-1 bg-cyan-400 h-8 rounded"></div>
+                <div class="w-1 bg-blue-600 h-3 rounded"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dynamic Trading Quote Module -->
+        <div class="relative">
+          <div class="absolute -top-12 -left-8 text-9xl text-white/5 font-serif font-bold leading-none select-none">"</div>
+          <div id="quote-container" class="relative backdrop-blur-md bg-slate-900/30 border border-white/5 p-8 rounded-2xl shadow-2xl transition-all duration-500 hover:border-white/10">
+            <h2 id="quote-text" class="text-2xl font-medium text-white mb-4 leading-relaxed tracking-tight min-h-[80px] flex items-center justify-center">
+              "The individual investor should act consistently as an investor and not as a speculator."
+            </h2>
+            <div class="flex items-center justify-center gap-4">
+              <div class="h-px w-8 bg-gradient-to-r from-transparent to-blue-500/50"></div>
+              <p id="quote-author" class="text-xs font-mono font-bold uppercase tracking-wider text-slate-400">Benjamin Graham</p>
+              <div class="h-px w-8 bg-gradient-to-l from-transparent to-blue-500/50"></div>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+
+    <!-- RIGHT COMPONENT: USER SIGN IN MODULE -->
+    <div class="w-full lg:w-1/2 flex flex-col relative z-20 backdrop-blur-lg bg-slate-950/40 lg:bg-slate-950/50 border-l border-white/5 shadow-2xl h-full">
+      
+      <!-- Top Actions Segment -->
+      <div class="absolute top-6 right-6 z-50 flex items-center gap-4">
+        <a href="#" class="text-xs text-slate-400 hover:text-white transition-colors">System Status</a>
+      </div>
+
+      <!-- Main Central Layout Alignment Form -->
+      <div class="flex-1 flex flex-col items-center justify-center p-6 sm:p-12 md:p-20 overflow-y-auto w-full">
+        <div class="max-w-[400px] w-full mx-auto">
+          
+          <!-- Brand Anchor Identity -->
+          <div class="mb-8 text-center">
+            <a href="#" class="inline-block">
+              <div class="logo">Nex<span>Trade</span></div>
+            </a>
+          </div>
+
+          <!-- Glassmorphism Form Card -->
+          <div class="relative group">
+            <div class="absolute -inset-0.5 bg-gradient-to-r from-blue-600 to-cyan-500 rounded-2xl opacity-10 blur-md transition duration-1000 group-hover:opacity-20"></div>
+            
+            <div class="relative bg-[#111827]/80 backdrop-blur-xl border border-white/5 p-8 sm:p-10 rounded-2xl shadow-2xl">
+              <div class="space-y-6">
+                
+                <div>
+                  <h3 class="text-xl font-semibold text-white tracking-tight">Welcome Back</h3>
+                  <p class="text-slate-400 text-xs mt-1">Sign in to access your trading desk.</p>
+                </div>
+
+                <!-- Input Interface Container -->
+                <div id="email-login-container" class="space-y-6">
+                  <form action="#" method="POST" class="space-y-4">
+                    
+                    <!-- Email field -->
+                    <div class="space-y-1.5">
+                      <label for="email" class="block text-[10px] font-mono font-medium text-slate-400 uppercase tracking-wider">Email Address</label>
+                      <input type="email" name="email" id="email" class="brand-input w-full rounded-xl px-4 py-3 text-sm placeholder-white/10" placeholder="name@domain.com" required autofocus>
+                    </div>
+                    
+                    <!-- Password field -->
+                    <div class="space-y-1.5">
+                      <div class="flex items-center justify-between">
+                        <label for="password" class="block text-[10px] font-mono font-medium text-slate-400 uppercase tracking-wider">Password</label>
+                        <a href="#" class="text-xs text-blue-400 hover:text-blue-300 transition-colors font-medium">Forgot?</a>
+                      </div>
+                      <input type="password" name="password" id="password" class="brand-input w-full rounded-xl px-4 py-3 text-sm placeholder-••••••••" placeholder="••••••••" required>
+                    </div>
+
+                    <!-- Options Frame -->
+                    <div class="flex items-center">
+                      <input id="remember" name="remember" type="checkbox" class="h-4 w-4 bg-slate-900 border-white/10 rounded text-blue-500 focus:ring-blue-500/50 focus:ring-offset-0 transition-colors">
+                      <label for="remember" class="ml-2 block text-xs text-slate-400 select-none">
+                        Keep me signed in on this device
+                      </label>
+                    </div>
+
+                    <!-- Dispatch Primary Action Button -->
+                    <button type="submit" class="btn-brand-primary w-full font-semibold py-3 px-4 rounded-xl shadow-lg relative overflow-hidden text-sm mt-2">
+                      <span class="relative z-10">Sign In</span>
+                    </button>
+                    
+                  </form>
+                </div>
+
+                <!-- Dynamic Redirection Link -->
+                <div class="pt-2 text-center border-t border-white/5">
+                  <p class="text-xs text-slate-400">
+                    New to the platform?
+                    <a href="#" class="font-semibold text-white hover:text-blue-400 transition-colors ml-1">Open an Account</a>
+                  </p>
+                </div>
+
+              </div>
+            </div>
+          </div> <!-- End Card -->
+
+        </div>
+      </div>
+
+      <!-- Compact Desktop Copyright Footer -->
+      <div class="p-6 text-center border-t border-white/5 bg-slate-950/20">
+        <p class="font-mono text-[10px] text-slate-500 tracking-wide uppercase">© 2026 NexTrade Global Systems Inc.</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Smooth Quote Rotator Engine Script -->
+  <script>
+    const quotes = [
+      { text: "The individual investor should act consistently as an investor and not as a speculator.", author: "Benjamin Graham" },
+      { text: "Know what you own, and know why you own it.", author: "Peter Lynch" },
+      { text: "In investing, what is comfortable is rarely profitable.", author: "Robert Arnott" },
+      { text: "The four most dangerous words in investing are: 'This time it's different.'", author: "Sir John Templeton" }
+    ];
+
+    let currentIndex = 0;
+    const quoteTextEl = document.getElementById('quote-text');
+    const quoteAuthorEl = document.getElementById('quote-author');
+    const containerEl = document.getElementById('quote-container');
+
+    setInterval(() => {
+      currentIndex = (currentIndex + 1) % quotes.length;
+      
+      // Smooth fade configuration
+      containerEl.style.opacity = 0;
+      containerEl.style.transform = 'translateY(5px)';
+      
+      setTimeout(() => {
+        quoteTextEl.innerText = `"${quotes[currentIndex].text}"`;
+        quoteAuthorEl.innerText = quotes[currentIndex].author;
+        containerEl.style.opacity = 1;
+        containerEl.style.transform = 'translateY(0px)';
+      }, 400);
+
+    }, 8000);
+  </script>
+</body>
+</html>
